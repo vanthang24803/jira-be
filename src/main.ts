@@ -1,23 +1,22 @@
-import express from "express";
+import { errorHandlerMiddleware } from "@/middlewares";
+import { router } from "@/routes";
 import cors from "cors";
+import express from "express";
+import type { Application } from "express";
 import morgan from "morgan";
-import type { Application, Request, Response } from "express";
 
 const app: Application = express();
 
 app.use(cors());
 
 app.use(
-  morgan(":method :url :status :res[content-length] - :response-time ms")
+  morgan(":method :url :status :res[content-length] - :response-time ms"),
 );
 
-const port = process.env.PORT || 3000;
+app.use(router);
+app.use(errorHandlerMiddleware);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send({
-    message: "Hello World",
-  });
-});
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`Application listening on port ${port}...`);

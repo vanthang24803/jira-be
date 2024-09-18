@@ -23,6 +23,9 @@
       "style": {
         "useImportType": "error",
         "useExportType": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
       }
     }
   },
