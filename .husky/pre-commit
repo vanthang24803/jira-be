@@ -1,0 +1,6 @@
+echo "Format and Lint Code 🔨"
+bun format
+
+bun lint
+
+echo "Format successfully! 🎉"

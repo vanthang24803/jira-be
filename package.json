@@ -1,0 +1,27 @@
+{
+  "name": "jira-api",
+  "module": "main.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot src/main.ts",
+    "format": "bunx biome format --write .",
+    "lint": "bunx biome check --write .",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.1",
+    "@types/bun": "latest",
+    "@types/morgan": "^1.9.9",
+    "husky": "^9.1.6",
+    "morgan": "^1.10.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  }
+}
