@@ -1,4 +1,4 @@
-import { BaseResponse } from "@/helpers/response.helper";
+import { BaseResponse } from "@/helpers";
 import express, { type Router } from "express";
 import type { NextFunction, Request, Response } from "express";
 
