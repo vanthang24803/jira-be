@@ -1,19 +1,19 @@
 import { ApiError } from "@/errors";
 import type { NextFunction, Request, Response } from "express";
+import { z } from "zod";
 
 export const errorHandlerMiddleware = (
-  err: ApiError,
-  req: Request,
+  err: unknown,
+  _req: Request,
   res: Response,
-  next: NextFunction,
-) => {
-  if (err instanceof ApiError) {
-    res.status(err.code).json({
-      message: err.message,
-      code: err.code,
-      timestamp: err.timestamp,
-    });
-  } else {
-    res.status(500).json(new ApiError(500, err));
+  _next: NextFunction,
+): void => {
+  if (err instanceof z.ZodError) {
+    res.status(400).json(new ApiError(400, err.flatten()));
+    return;
   }
+  if (err instanceof ApiError) {
+    res.status(err.code).json(err);
+  }
+  res.status(500).json(new ApiError(500, "Internal Sever Error"));
 };

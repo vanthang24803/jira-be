@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const TOKEN_TYPE = ["Account", "Refresh", "Password"];
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -28,6 +30,19 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    tokens: [
+      {
+        value: {
+          type: String,
+          required: true,
+        },
+        type: {
+          type: String,
+          enum: TOKEN_TYPE,
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const memberSchema = new mongoose.Schema(
+const commentSchema = new mongoose.Schema(
   {
     author: {
       type: String,
@@ -26,4 +26,4 @@ const memberSchema = new mongoose.Schema(
   },
 );
 
-export const Member = mongoose.model("Member", memberSchema);
+export const Comment = mongoose.model("Comment", commentSchema);

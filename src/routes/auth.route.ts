@@ -4,5 +4,6 @@ import express, { type Router } from "express";
 const router: Router = express.Router();
 
 router.post("/register", controller.register);
+router.post("/login", controller.login);
 
 export default router;
