@@ -167,9 +167,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+log.txt
 
 # IntelliJ based IDEs
 .idea
+dist
 
 # Finder (MacOS) folder config
 .DS_Store

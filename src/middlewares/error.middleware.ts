@@ -14,6 +14,6 @@ export const errorHandlerMiddleware = (
       timestamp: err.timestamp,
     });
   } else {
-    res.status(500).json(new ApiError(500, "Internal Server Error"));
+    res.status(500).json(new ApiError(500, err));
   }
 };

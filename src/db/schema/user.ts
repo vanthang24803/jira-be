@@ -21,7 +21,13 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
-    isVerifyEmail: String,
+    isVerifyEmail: {
+      type: Boolean,
+      default: false,
+    },
+    password: {
+      type: String,
+    },
   },
   {
     timestamps: true,
