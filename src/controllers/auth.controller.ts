@@ -26,7 +26,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 const refreshToken = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const jsonBody = tokenSchema.parse(req.body);
@@ -40,4 +40,21 @@ const refreshToken = async (
   }
 };
 
-export { register, login, refreshToken };
+const verifyAccount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = req.query.token as string;
+
+    const result = await service.verifyEmail(token);
+
+    return res.status(200).json(result);
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+export { register, login, refreshToken, verifyAccount };

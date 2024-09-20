@@ -30,9 +30,28 @@ const generateRefreshToken = (data: object) => {
   });
 };
 
-const verifyToken = async (token: string) => {
+const verifyToken = (token: string) => {
   try {
-    return jwt.verify(token, process.env.JWT_REFRESH || "") as JwtPayload;
+    return jwt.verify(token, process.env.JWT_REFRESH || "", {
+      ignoreExpiration: true,
+    }) as JwtPayload;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(401, "Unauthorized");
+  }
+};
+
+const generateTokenURI = (email: string) => {
+  return jwt.sign({ email }, process.env.JWT_SECRET || "", {
+    expiresIn: "10m",
+  });
+};
+
+const verifyTokenURI = (token: string) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET || "", {
+      ignoreExpiration: true,
+    }) as JwtPayload;
   } catch (error) {
     logger.error(error);
     throw new ApiError(401, "Unauthorized");
@@ -44,4 +63,6 @@ export {
   generateToken,
   generateRefreshToken,
   verifyToken,
+  generateTokenURI,
+  verifyTokenURI,
 };
