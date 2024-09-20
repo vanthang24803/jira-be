@@ -14,7 +14,7 @@ router.use("/me", passport.authenticate("jwt", { session: false }), meRoute);
 router.use(
   "/projects",
   passport.authenticate("jwt", { session: false }),
-  projectRoute
+  projectRoute,
 );
 
 router.get("/", (_: Request, res: Response, next: NextFunction) => {
