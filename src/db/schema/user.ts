@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 const TOKEN_TYPE = ["Account", "Refresh", "Password"];
 
@@ -46,7 +46,20 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export const User = mongoose.model("User", userSchema);
+export type UserType = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar: string | null;
+  isVerifyEmail: boolean;
+  password: string;
+  tokens: {
+    value: string;
+    type: string;
+  }[];
+} & Document;
+
+export const User = mongoose.model<UserType>("User", userSchema);

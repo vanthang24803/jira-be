@@ -1,4 +1,4 @@
-import { User } from "@/db";
+import { User, UserType } from "@/db";
 import { logger } from "@/libs";
 import { ExtractJwt, Strategy, type StrategyOptions } from "passport-jwt";
 
@@ -9,9 +9,9 @@ const opts: StrategyOptions = {
 
 export const passportMiddleware = new Strategy(opts, async (payload, done) => {
   try {
-    const user = await User.findOne({
+    const user = (await User.findOne({
       email: payload.data.email,
-    });
+    })) as UserType;
 
     if (user) {
       return done(null, user);

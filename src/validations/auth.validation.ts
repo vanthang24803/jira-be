@@ -12,8 +12,13 @@ const loginSchema = z.object({
   password: z.string().min(6).max(255),
 });
 
-type RegisterSchema = z.infer<typeof registerSchema>;
-type LoginSchema = z.infer<typeof loginSchema>;
+const tokenSchema = z.object({
+  token: z.string().min(1),
+});
 
-export type { RegisterSchema, LoginSchema };
-export { registerSchema, loginSchema };
+type LoginSchema = z.infer<typeof loginSchema>;
+type TokenSchema = z.infer<typeof tokenSchema>;
+type RegisterSchema = z.infer<typeof registerSchema>;
+
+export type { RegisterSchema, LoginSchema, TokenSchema };
+export { registerSchema, loginSchema, tokenSchema };

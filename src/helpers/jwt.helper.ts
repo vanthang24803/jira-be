@@ -1,3 +1,5 @@
+import { ApiError } from "@/errors";
+import { logger } from "@/libs";
 import "dotenv/config";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 
@@ -28,8 +30,13 @@ const generateRefreshToken = (data: object) => {
   });
 };
 
-const verifyToken = (token: string) => {
-  return jwt.verify(token, process.env.JWT_REFRESH || "") as JwtPayload;
+const verifyToken = async (token: string) => {
+  try {
+    return jwt.verify(token, process.env.JWT_REFRESH || "") as JwtPayload;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(401, "Unauthorized");
+  }
 };
 
 export {
