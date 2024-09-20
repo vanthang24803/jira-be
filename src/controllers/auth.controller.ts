@@ -26,7 +26,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 const refreshToken = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const jsonBody = tokenSchema.parse(req.body);

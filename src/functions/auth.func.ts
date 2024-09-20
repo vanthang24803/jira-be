@@ -36,7 +36,7 @@ const login = async (jsonBody: LoginSchema) => {
 
   const isMatchPassword = verifyPasswordHelper(
     jsonBody.password,
-    account.password ?? ""
+    account.password ?? "",
   );
 
   if (!isMatchPassword) throw new ApiError(400, "Credential!");
@@ -50,7 +50,7 @@ const login = async (jsonBody: LoginSchema) => {
   const token = jwt.generateToken(payload);
 
   const existingTokenIndex = account.tokens.findIndex(
-    (token) => token.type === "Refresh"
+    (token) => token.type === "Refresh",
   );
 
   if (existingTokenIndex > -1) {
@@ -83,7 +83,7 @@ const refreshToken = async (jsonBody: TokenSchema) => {
   };
 
   const existingTokenIndex = account.tokens.findIndex(
-    (token) => token.type === "Refresh"
+    (token) => token.type === "Refresh",
   );
 
   if (decoded.exp && decoded.exp < Date.now() / 1000 + 24 * 60 * 60) {

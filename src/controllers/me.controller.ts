@@ -1,4 +1,4 @@
-import { UserType } from "@/db";
+import type { UserType } from "@/db";
 import * as service from "@/functions/me.func";
 import { logger } from "@/libs";
 import type { NextFunction, Request, Response } from "express";

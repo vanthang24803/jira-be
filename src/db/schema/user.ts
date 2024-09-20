@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { type Document } from "mongoose";
 
 const TOKEN_TYPE = ["Account", "Refresh", "Password"];
 
@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export type UserType = {

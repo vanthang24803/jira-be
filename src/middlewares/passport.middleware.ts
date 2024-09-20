@@ -1,4 +1,4 @@
-import { User, UserType } from "@/db";
+import { User, type UserType } from "@/db";
 import { logger } from "@/libs";
 import { ExtractJwt, Strategy, type StrategyOptions } from "passport-jwt";
 
