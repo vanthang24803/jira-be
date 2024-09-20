@@ -82,12 +82,10 @@ const login = async (jsonBody: LoginSchema) => {
 
   const token = jwt.generateToken(payload);
 
-  const existingTokenIndex = account.tokens.findIndex(
-    (token) => token.type === "Refresh",
-  );
+  const existToken = account.tokens.find((x) => x.type === "Refresh");
 
-  if (existingTokenIndex > -1) {
-    account.tokens[existingTokenIndex].value = token.rf_token;
+  if (existToken) {
+    existToken.value = token.rf_token;
   } else {
     account.tokens.push({
       value: token.rf_token,
@@ -115,20 +113,19 @@ const refreshToken = async (jsonBody: TokenSchema) => {
     fullName: `${account.firstName} ${account.lastName}`,
   };
 
-  const existingTokenIndex = account.tokens.findIndex(
-    (token) => token.type === "Refresh",
-  );
+  const existToken = account.tokens.find((x) => x.type === "Refresh");
+  if (!existToken) throw new ApiError(400, "Token not found");
 
   if (decoded.exp && decoded.exp < Date.now() / 1000 + 24 * 60 * 60) {
     const token = jwt.generateToken(payload);
-    account.tokens[existingTokenIndex].value = token.rf_token;
+    existToken.value = token.rf_token;
   }
 
   const ac_token = jwt.generateAccessToken(payload);
 
   const token = {
     ac_token,
-    rf_token: account.tokens[existingTokenIndex].value,
+    rf_token: existToken.value,
   };
 
   await account.save();
@@ -145,12 +142,11 @@ const verifyEmail = async (token: string) => {
 
   if (!account) throw new ApiError(401, "Credential");
 
-  const existingTokenIndex = account.tokens.findIndex(
-    (token) => token.type === "Account",
-  );
+  const mailToken = account.tokens.find((x) => x.type === "Account");
 
-  // if (!(token === account.tokens[existingTokenIndex].value))
-  //   throw new ApiError(401, "Credential");
+  if (!mailToken || token !== mailToken.value) {
+    throw new ApiError(401, "Credential");
+  }
 
   if (decoded.exp && decoded.exp < Date.now() / 1000) {
     const tokenMail = jwt.generateTokenURI(account.email);
@@ -163,16 +159,28 @@ const verifyEmail = async (token: string) => {
       )}" target='_blank'>Click here to verify your account</a>`,
     );
 
-    account.tokens[existingTokenIndex].value = tokenMail;
-
+    mailToken.value = tokenMail;
     return new BaseResponse<string>(200, "Token resend");
   }
 
+  account.tokens = account.tokens.filter((x) => x.type !== "Account");
+
   account.isVerifyEmail = true;
+
+  const tokenResponse = jwt.generateToken({
+    id: account.id,
+    email: account.email,
+    fullName: `${account.firstName} ${account.lastName}`,
+  });
+
+  account.tokens.push({
+    value: tokenResponse.rf_token,
+    type: "Refresh",
+  });
 
   await account.save();
 
-  return new BaseResponse<string>(200, "Verify Account Successfully!");
+  return new BaseResponse<object>(200, tokenResponse);
 };
 
 export { register, login, refreshToken, verifyEmail };
