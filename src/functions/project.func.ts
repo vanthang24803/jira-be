@@ -99,7 +99,7 @@ const update = async (admin: UserType, id: string, jsonBody: ProjectSchema) => {
 
   const isAdmin = project[0].members.find(
     (member: MemberType) =>
-      member.email === admin.email && member.role === "Administrator"
+      member.email === admin.email && member.role === "Administrator",
   );
 
   if (!isAdmin)
@@ -111,7 +111,7 @@ const update = async (admin: UserType, id: string, jsonBody: ProjectSchema) => {
       $set: {
         ...jsonBody,
       },
-    }
+    },
   );
 
   return new BaseResponse<string>(200, "Updated project successfully!");
@@ -138,7 +138,7 @@ const remove = async (admin: UserType, id: string) => {
 
   const isAdmin = project[0].members.find(
     (member: MemberType) =>
-      member.email === admin.email && member.role === "Administrator"
+      member.email === admin.email && member.role === "Administrator",
   );
 
   if (!isAdmin)

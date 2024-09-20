@@ -1,15 +1,10 @@
-# jira-api
+# Running the Application
 
-To install dependencies:
+This is a basic guide on how to run the AMAK Nextjs application.
 
-```bash
-bun install
-```
+## Prerequisites
 
-To run:
+To run the application, you will need to have the following installed on your machine:
 
-```bash
-bun run main.ts
-```
-
-This project was created using `bun init` in bun v1.1.27. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+- NodeJS >= 20.16.0: [Download and Install NodeJS](https://nodejs.org/en)
+- Git: [Download and Install Git](https://git-scm.com/downloads)

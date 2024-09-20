@@ -1,7 +1,7 @@
-import { logger } from "@/libs";
 import type { UserType } from "@/db";
-import { projectSchema } from "@/validations";
 import * as service from "@/functions/project.func";
+import { logger } from "@/libs";
+import { projectSchema } from "@/validations";
 import type { NextFunction, Request, Response } from "express";
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
