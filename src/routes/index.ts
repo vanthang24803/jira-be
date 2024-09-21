@@ -6,6 +6,7 @@ import passport from "passport";
 import authRoute from "./auth.route";
 import meRoute from "./me.route";
 import projectRoute from "./project.route";
+import taskRoute from "./task.route";
 
 const router: Router = express.Router();
 
@@ -15,6 +16,12 @@ router.use(
   "/projects",
   passport.authenticate("jwt", { session: false }),
   projectRoute,
+);
+
+router.use(
+  "/projects/:projectId/tasks",
+  passport.authenticate("jwt", { session: false }),
+  taskRoute,
 );
 
 router.get("/", (_: Request, res: Response, next: NextFunction) => {

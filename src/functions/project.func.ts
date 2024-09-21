@@ -51,6 +51,11 @@ const findAll = async (account: UserType) => {
 const findDetail = async (id: string) => {
   const project = await Project.aggregate([
     {
+      $match: {
+        _id: new mongoose.Types.ObjectId(id),
+      },
+    },
+    {
       $lookup: {
         from: "members",
         localField: "members",
@@ -61,14 +66,9 @@ const findDetail = async (id: string) => {
     {
       $lookup: {
         from: "tasks",
-        localField: "_id",
-        foreignField: "projectId",
+        localField: "tasks",
+        foreignField: "_id",
         as: "tasks",
-      },
-    },
-    {
-      $match: {
-        _id: new mongoose.Types.ObjectId(id),
       },
     },
   ]);

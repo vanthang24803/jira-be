@@ -1,12 +1,12 @@
-import "module-alias/register";
 import "dotenv/config";
+import cors from "cors";
+import express from "express";
+import passport from "passport";
+import "module-alias/register";
 import { connection } from "@/db";
 import { errorHandlerMiddleware, passportMiddleware } from "@/middlewares";
 import { router } from "@/routes";
-import cors from "cors";
-import express from "express";
 import type { Application } from "express";
-import passport from "passport";
 
 const app: Application = express();
 

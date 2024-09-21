@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { type Document } from "mongoose";
 
-const TASK_LEVEL = ["Lowest", "Low", "Medium", "Highest"];
+const TASK_LEVEL = ["Lowest", "Low", "Medium", "Highest", "High"];
 const TASK_STATUS = ["Backlog", "Process", "Done"];
 const TASK_TYPE = ["Task", "Bug", "Story"];
 
@@ -37,9 +37,8 @@ const taskSchema = new mongoose.Schema(
       default: "Backlog",
     },
     reporter: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Member",
-      required: true,
+      type: Object,
+      require: true,
     },
     assignees: [
       {
@@ -48,13 +47,20 @@ const taskSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    endAt: {
-      type: Date,
-    },
   },
   {
     timestamps: true,
   },
 );
+
+export type TaskType = {
+  _id: string;
+  name: string;
+  type: string;
+  description: string;
+  code: string;
+  level: string;
+  status: string;
+} & Document;
 
 export const Task = mongoose.model("Task", taskSchema);

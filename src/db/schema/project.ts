@@ -30,6 +30,12 @@ const projectSchema = new mongoose.Schema(
         ref: "Member",
       },
     ],
+    tasks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task",
+      },
+    ],
   },
   {
     timestamps: true,

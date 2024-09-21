@@ -8,3 +8,15 @@ To run the application, you will need to have the following installed on your ma
 
 - NodeJS >= 20.16.0: [Download and Install NodeJS](https://nodejs.org/en)
 - Git: [Download and Install Git](https://git-scm.com/downloads)
+
+## ENV
+
+```env
+PORT=
+DATABASE_URL=
+JWT_SECRET=
+JWT_REFRESH=
+MAIL_USER=
+MAIL_PASSWORD=
+URL_CLIENT=
+```
