@@ -1,4 +1,4 @@
-import type { UserType } from "@/db";
+import { User, type UserType } from "@/db";
 import { BaseResponse } from "@/helpers";
 import { type ProfileSchema, profileSchema } from "@/validations";
 

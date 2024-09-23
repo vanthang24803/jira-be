@@ -7,7 +7,13 @@ const projectSchema = z.object({
   category: z.string().min(1).max(255),
 });
 
-type ProjectSchema = z.infer<typeof projectSchema>;
+const addMemberSchema = z.object({
+  email: z.string().min(1).max(255),
+  role: z.string().min(1).max(255),
+});
 
-export type { ProjectSchema };
-export { projectSchema };
+type ProjectSchema = z.infer<typeof projectSchema>;
+type AddMemberSchema = z.infer<typeof addMemberSchema>;
+
+export type { ProjectSchema, AddMemberSchema };
+export { projectSchema, addMemberSchema };
