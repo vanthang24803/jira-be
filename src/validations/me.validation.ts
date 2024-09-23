@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const profileSchema = z.object({
+  id: z.string().min(1),
   email: z.string().email(),
   firstName: z.string().min(1).max(255),
   lastName: z.string().min(1).max(255),
