@@ -1,7 +1,7 @@
 import mongoose, { type Document } from "mongoose";
 
 const TASK_LEVEL = ["Lowest", "Low", "Medium", "Highest", "High"];
-const TASK_STATUS = ["Backlog", "Process", "Done"];
+const TASK_STATUS = ["Backlog", "Process", "Done", "Develop"];
 const TASK_TYPE = ["Task", "Bug", "Story"];
 
 const taskSchema = new mongoose.Schema(
@@ -50,7 +50,7 @@ const taskSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 export type TaskType = {

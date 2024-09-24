@@ -2,7 +2,7 @@ import { Member, type MemberType, Project, User, type UserType } from "@/db";
 import { ApiError } from "@/errors";
 import { BaseResponse } from "@/helpers";
 import {
-  AddMemberSchema,
+  type AddMemberSchema,
   type ProjectSchema,
   profileSchema,
 } from "@/validations";

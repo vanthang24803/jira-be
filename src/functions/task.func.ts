@@ -7,21 +7,19 @@ import mongoose from "mongoose";
 const save = async (
   author: UserType,
   projectId: string,
-  jsonBody: TaskSchema,
+  jsonBody: TaskSchema
 ) => {
   const taskCode = randomTaskCode();
 
   const newTask = await Task.create({
     ...jsonBody,
     code: taskCode,
-    reporter: profileSchema.parse(author),
-    assignees: [],
   });
 
   await Project.findByIdAndUpdate(
     projectId,
     { $push: { tasks: newTask._id } },
-    { new: true, useFindAndModify: false },
+    { new: true, useFindAndModify: false }
   );
 
   return new BaseResponse<object>(200, newTask);
@@ -36,12 +34,8 @@ const findAll = async (member: UserType, projectId: string) => {
 const findDetail = async (
   member: UserType,
   projectId: string,
-  taskId: string,
+  taskId: string
 ) => {
-  const existingProject = await findProjectById(member, projectId);
-
-  if (!existingProject) throw new ApiError(404, "Project not found!");
-
   const task = await Task.aggregate([
     {
       $match: {
@@ -58,25 +52,21 @@ const findDetail = async (
     },
   ]);
 
-  return new BaseResponse<object>(200, task);
+  return new BaseResponse<object>(200, task[0]);
 };
 
 const update = async (
   member: UserType,
   projectId: string,
   taskId: string,
-  jsonBody: TaskSchema,
+  jsonBody: TaskSchema
 ) => {
-  const existingProject = await findProjectById(member, projectId);
-
-  if (!existingProject) throw new ApiError(404, "Project not found!");
-
   const updatedTask = await Task.findByIdAndUpdate(
     taskId,
     {
       ...jsonBody,
     },
-    { new: true, runValidators: true },
+    { new: true, runValidators: true }
   );
 
   if (!updatedTask) throw new ApiError(404, "Task not found!");
@@ -131,7 +121,7 @@ const findProjectById = async (user: UserType, projectId: string) => {
     throw new ApiError(404, "Project not found!");
 
   const isMember = existingProject[0].members.find(
-    (x: MemberType) => x.email === user.email,
+    (x: MemberType) => x.email === user.email
   );
 
   if (!isMember) throw new ApiError(403, "Forbidden");
