@@ -13,21 +13,25 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
     category: {
       type: String,
       enum: CATEGORY_ENUM,
       default: "Software",
       required: true,
     },
+    description: {
+      type: String,
+    },
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Member",
+      },
+    ],
+    tasks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task",
       },
     ],
   },

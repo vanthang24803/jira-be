@@ -1,7 +1,7 @@
 import type { UserType } from "@/db";
 import * as service from "@/functions/project.func";
 import { logger } from "@/libs";
-import { projectSchema } from "@/validations";
+import { addMemberSchema, projectSchema } from "@/validations";
 import type { NextFunction, Request, Response } from "express";
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
@@ -77,4 +77,21 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { create, findAll, findOne, update, remove };
+const addMember = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+
+    const admin = req.user as UserType;
+
+    const jsonBody = addMemberSchema.parse(req.body);
+
+    const result = await service.addMember(admin, id, jsonBody);
+
+    return res.status(200).json(result);
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+export { create, findAll, findOne, update, remove, addMember };
