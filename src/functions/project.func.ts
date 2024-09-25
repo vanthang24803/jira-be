@@ -102,7 +102,7 @@ const update = async (admin: UserType, id: string, jsonBody: ProjectSchema) => {
 
   const isAdmin = project[0].members.find(
     (member: MemberType) =>
-      member.email === admin.email && member.role === "Administrator"
+      member.email === admin.email && member.role === "Administrator",
   );
 
   if (!isAdmin)
@@ -114,7 +114,7 @@ const update = async (admin: UserType, id: string, jsonBody: ProjectSchema) => {
       $set: {
         ...jsonBody,
       },
-    }
+    },
   );
 
   return new BaseResponse<string>(200, "Updated project successfully!");
@@ -141,7 +141,7 @@ const remove = async (admin: UserType, id: string) => {
 
   const isAdmin = project[0].members.find(
     (member: MemberType) =>
-      member.email === admin.email && member.role === "Administrator"
+      member.email === admin.email && member.role === "Administrator",
   );
 
   if (!isAdmin)
@@ -155,7 +155,7 @@ const remove = async (admin: UserType, id: string) => {
 const addMember = async (
   admin: UserType,
   id: string,
-  jsonBody: AddMemberSchema
+  jsonBody: AddMemberSchema,
 ) => {
   const project = await Project.aggregate([
     {
@@ -177,7 +177,7 @@ const addMember = async (
 
   const isAdmin = project[0].members.find(
     (member: MemberType) =>
-      member.email === admin.email && member.role === "Administrator"
+      member.email === admin.email && member.role === "Administrator",
   );
 
   if (!isAdmin)
@@ -190,7 +190,7 @@ const addMember = async (
   if (!account) throw new ApiError(404, "User not found!");
 
   const isExistingMember = project[0].members.some(
-    (member: MemberType) => member.email === account.email
+    (member: MemberType) => member.email === account.email,
   );
 
   if (isExistingMember)
