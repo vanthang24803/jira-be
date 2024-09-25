@@ -43,7 +43,7 @@ const findOne = async (req: Request, res: Response, next: NextFunction) => {
 
     const member = req.user as UserType;
 
-    const result = await service.findDetail(member, projectId, taskId);
+    const result = await service.findDetail(taskId);
 
     return res.status(200).json(result);
   } catch (error) {

@@ -1,11 +1,8 @@
 import { Member, type MemberType, Project, User, type UserType } from "@/db";
 import { ApiError } from "@/errors";
 import { BaseResponse } from "@/helpers";
-import {
-  type AddMemberSchema,
-  type ProjectSchema,
-  profileSchema,
-} from "@/validations";
+import type { IMember, ITask } from "@/types";
+import type { AddMemberSchema, ProjectSchema } from "@/validations";
 import mongoose from "mongoose";
 
 const save = async (author: UserType, jsonBody: ProjectSchema) => {
@@ -213,4 +210,85 @@ const addMember = async (
   };
 };
 
-export { save, findAll, findDetail, update, remove, addMember };
+const reportProject = async (slug: string) => {
+  const project = await Project.aggregate([
+    {
+      $match: {
+        url: slug,
+      },
+    },
+    {
+      $lookup: {
+        from: "members",
+        localField: "members",
+        foreignField: "_id",
+        as: "members",
+      },
+    },
+    {
+      $lookup: {
+        from: "tasks",
+        localField: "tasks",
+        foreignField: "_id",
+        as: "tasks",
+      },
+    },
+  ]);
+
+  if (project.length === 0) throw new ApiError(404, "Project not found!");
+
+  const { members, tasks }: { members: IMember[]; tasks: ITask[] } = project[0];
+
+  const result = members.map((member) => {
+    const totalReport = tasks.filter(
+      (task) => task.reporter._id.toString() === member._id.toString(),
+    ).length;
+
+    const assignee = tasks.filter((task) =>
+      task.assignees
+        .map((assigneeId) => assigneeId.toString())
+        .includes(member._id.toString()),
+    ).length;
+
+    return {
+      ...member,
+      totalReport,
+      assignee,
+    };
+  });
+
+  const jsonResponse = {
+    members: result,
+    chart: handleChartData({ members, tasks }),
+  };
+
+  return jsonResponse;
+};
+
+const handleChartData = (data: any) => {
+  let taskBug = 0;
+  let taskStory = 0;
+  let task = 0;
+  let taskDone = 0;
+  let taskProcess = 0;
+  let taskDev = 0;
+  let taskBacklog = 0;
+
+  for (const taskItem of data.tasks) {
+    if (taskItem.type === "Bug") taskBug++;
+    else if (taskItem.type === "Story") taskStory++;
+    else if (taskItem.type === "Task") task++;
+
+    if (taskItem.status === "Done") taskDone++;
+    else if (taskItem.status === "Process") taskProcess++;
+    else if (taskItem.status === "Develop") taskDev++;
+    else if (taskItem.status === "Backlog") taskBacklog++;
+  }
+
+  return {
+    status: [taskBacklog, taskDev, taskProcess, taskDone],
+    type: [task, taskStory, taskBug],
+  };
+};
+
+export { save, findAll, findDetail, update, remove, addMember, reportProject };

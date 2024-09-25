@@ -1,14 +1,12 @@
-import { type MemberType, Project, Task, TaskType, type UserType } from "@/db";
+import { type MemberType, Project, Task, type UserType } from "@/db";
 import { ApiError } from "@/errors";
 import { BaseResponse, randomTaskCode } from "@/helpers";
-import { type TaskSchema, profileSchema } from "@/validations";
+import type { TaskSchema } from "@/validations";
 import mongoose from "mongoose";
 
-const save = async (
-  author: UserType,
-  projectId: string,
-  jsonBody: TaskSchema,
-) => {
+const save = async (author: UserType, slug: string, jsonBody: TaskSchema) => {
+  await findProjectById(author, slug);
+
   const taskCode = randomTaskCode();
 
   const newTask = await Task.create({
@@ -16,8 +14,10 @@ const save = async (
     code: taskCode,
   });
 
-  await Project.findByIdAndUpdate(
-    projectId,
+  await Project.findOneAndUpdate(
+    {
+      url: slug,
+    },
     { $push: { tasks: newTask._id } },
     { new: true, useFindAndModify: false },
   );
@@ -25,17 +25,13 @@ const save = async (
   return new BaseResponse<object>(200, newTask);
 };
 
-const findAll = async (member: UserType, projectId: string) => {
-  const project = await findProjectById(member, projectId);
+const findAll = async (member: UserType, slug: string) => {
+  const project = await findProjectById(member, slug);
 
   return new BaseResponse<object>(200, project.tasks);
 };
 
-const findDetail = async (
-  member: UserType,
-  projectId: string,
-  taskId: string,
-) => {
+const findDetail = async (taskId: string) => {
   const task = await Task.aggregate([
     {
       $match: {
@@ -57,10 +53,12 @@ const findDetail = async (
 
 const update = async (
   member: UserType,
-  projectId: string,
+  slug: string,
   taskId: string,
   jsonBody: TaskSchema,
 ) => {
+  await findProjectById(member, slug);
+
   const updatedTask = await Task.findByIdAndUpdate(
     taskId,
     {
@@ -74,10 +72,8 @@ const update = async (
   return new BaseResponse<string>(200, "Task updated successfully");
 };
 
-const remove = async (author: UserType, projectId: string, taskId: string) => {
-  const existingProject = await findProjectById(author, projectId);
-
-  if (!existingProject) throw new ApiError(404, "Project not found!");
+const remove = async (author: UserType, slug: string, taskId: string) => {
+  await findProjectById(author, slug);
 
   const existingTask = await Task.findById(taskId);
 
@@ -92,11 +88,11 @@ const remove = async (author: UserType, projectId: string, taskId: string) => {
   return new BaseResponse<string>(200, "Task deleted successfully");
 };
 
-const findProjectById = async (user: UserType, projectId: string) => {
+const findProjectById = async (user: UserType, slug: string) => {
   const existingProject = await Project.aggregate([
     {
       $match: {
-        _id: new mongoose.Types.ObjectId(projectId),
+        url: slug,
       },
     },
     {
