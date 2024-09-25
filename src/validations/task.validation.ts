@@ -7,7 +7,7 @@ const memberSchema = z.lazy(() =>
     fullName: z.string(),
     avatar: z.string(),
     role: z.string(),
-  })
+  }),
 );
 
 const taskSchema = z.object({
