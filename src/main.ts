@@ -7,6 +7,7 @@ import { connection } from "@/db";
 import { errorHandlerMiddleware, passportMiddleware } from "@/middlewares";
 import { router } from "@/routes";
 import type { Application } from "express";
+import "tsconfig-paths/register";
 
 const app: Application = express();
 
