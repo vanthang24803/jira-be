@@ -1,5 +1,4 @@
 import { User, type UserType } from "@/db";
-import { ApiError } from "@/errors";
 import * as service from "@/functions/me.func";
 import { logger } from "@/libs";
 import { profileSchema } from "@/validations";

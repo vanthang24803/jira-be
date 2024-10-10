@@ -4,6 +4,7 @@ import express, { type Router } from "express";
 import type { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import authRoute from "./auth.route";
+import commentRoute from "./comment.route";
 import meRoute from "./me.route";
 import projectRoute from "./project.route";
 import taskRoute from "./task.route";
@@ -22,6 +23,12 @@ router.use(
   "/projects/:projectId/tasks",
   passport.authenticate("jwt", { session: false }),
   taskRoute,
+);
+
+router.use(
+  "/projects/:projectId/tasks/:taskId/comments",
+  passport.authenticate("jwt", { session: false }),
+  commentRoute,
 );
 
 router.get("/", (_: Request, res: Response, next: NextFunction) => {
