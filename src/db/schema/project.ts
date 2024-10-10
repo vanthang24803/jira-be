@@ -12,6 +12,7 @@ const projectSchema = new mongoose.Schema(
     url: {
       type: String,
       required: true,
+      unique: true,
     },
     category: {
       type: String,
