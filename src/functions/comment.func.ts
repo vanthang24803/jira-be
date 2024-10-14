@@ -66,6 +66,20 @@ const findAllComments = async (taskId: string) => {
         as: "comments",
       },
     },
+    {
+      $unwind: "$comments",
+    },
+    {
+      $sort: {
+        "comments.createdAt": -1,
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        comments: { $push: "$comments" },
+      },
+    },
   ]);
 
   if (task.length === 0) throw new ApiError(404, "Task not found!");

@@ -27,7 +27,9 @@ const findAll = async (req: Request, res: Response, next: NextFunction) => {
 
     const member = req.user as UserType;
 
-    const result = await service.findAll(member, projectId);
+    const name = req.query.name;
+
+    const result = await service.findAll(member, projectId, name as string);
 
     return res.status(200).json(result);
   } catch (error) {
@@ -38,10 +40,7 @@ const findAll = async (req: Request, res: Response, next: NextFunction) => {
 
 const findOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const projectId = req.params.projectId;
     const taskId = req.params.id;
-
-    const member = req.user as UserType;
 
     const result = await service.findDetail(taskId);
 
