@@ -1,4 +1,10 @@
-import { type MemberType, Project, Task, type UserType } from "@/db";
+import {
+  type MemberType,
+  Project,
+  Task,
+  type TaskType,
+  type UserType,
+} from "@/db";
 import { ApiError } from "@/errors";
 import { BaseResponse, randomTaskCode } from "@/helpers";
 import type { TaskSchema } from "@/validations";
@@ -25,10 +31,22 @@ const save = async (author: UserType, slug: string, jsonBody: TaskSchema) => {
   return new BaseResponse<object>(200, newTask);
 };
 
-const findAll = async (member: UserType, slug: string) => {
+const findAll = async (
+  member: UserType,
+  slug: string,
+  query: string | undefined,
+) => {
   const project = await findProjectById(member, slug);
 
-  return new BaseResponse<object>(200, project.tasks);
+  let result = project.tasks;
+
+  if (query) {
+    result = result.filter((task: TaskType) =>
+      task.name.toLowerCase().includes(query.toLowerCase()),
+    );
+  }
+
+  return new BaseResponse<object>(200, result);
 };
 
 const findDetail = async (taskId: string) => {
