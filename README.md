@@ -1,6 +1,6 @@
 # Running the Application
 
-This is a basic guide on how to run the AMAK Nextjs application.
+This is a basic guide on how to run the Express application.
 
 ## Prerequisites
 
