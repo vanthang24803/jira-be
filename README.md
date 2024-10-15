@@ -78,7 +78,12 @@ Start dev Application:
 ```bash
 yarn dev
 ```
+Running on Docker
 
+```bash
+docker-compose up -d
+
+```
 This will start the Express application, and you can view it by navigating to http://localhost:3002.
 
 ## License
