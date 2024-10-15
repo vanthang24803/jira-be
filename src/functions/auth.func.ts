@@ -35,8 +35,8 @@ const register = async (jsonBody: RegisterSchema) => {
       jsonBody.email,
       "Verify your account",
       `<a href="${encodeURI(
-        `${process.env.URL_CLIENT || ""}/verify-account?token=${tokenMail}`,
-      )}" target='_blank'>Click here to verify your account</a>`,
+        `${process.env.URL_CLIENT || ""}/verify-account?token=${tokenMail}`
+      )}" target='_blank'>Click here to verify your account</a>`
     );
 
     newUser.tokens.push({
@@ -69,7 +69,7 @@ const login = async (jsonBody: LoginSchema) => {
 
   const isMatchPassword = verifyPasswordHelper(
     jsonBody.password,
-    account.password ?? "",
+    account.password ?? ""
   );
 
   if (!isMatchPassword) throw new ApiError(400, "Credential!");
@@ -155,8 +155,8 @@ const verifyEmail = async (token: string) => {
       account.email,
       "Verify your account",
       `<a href="${encodeURI(
-        `${process.env.URL_CLIENT || ""}/verify-account?token=${tokenMail}`,
-      )}" target='_blank'>Click here to verify your account</a>`,
+        `${process.env.URL_CLIENT || ""}/verify-account?token=${tokenMail}`
+      )}" target='_blank'>Click here to verify your account</a>`
     );
 
     mailToken.value = tokenMail;

@@ -5,5 +5,6 @@ const router: Router = express.Router();
 
 router.get("/", controller.getProfile);
 router.get("/search", controller.searchUser);
+router.post("/logout", controller.logout);
 
 export default router;

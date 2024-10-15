@@ -34,4 +34,14 @@ const searchUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { getProfile, searchUser };
+const logout = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const response = service.logout(req.user as UserType);
+    return res.status(200).json(response);
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+export { getProfile, searchUser, logout };
